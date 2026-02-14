@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DzServices 2026 Guide</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #006837; /* Deep Algeria Green */
+            --primary-light: #e6f4ea;
+            --accent: #d92e2e; /* Deep Red */
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+            --radius: 16px;
+            --font: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header { text-align: center; margin-bottom: 3rem; animation: fadeIn 0.6s ease-out; }
+
+        .brand { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, #2ecc71 100%);
+            color: white; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .logo-icon svg { width: 24px; height: 24px; }
+
+        h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.03em; }
+
+        .dot { color: var(--accent); }
+
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; }
+
+        .controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; max-width: 700px; margin: 0 auto; }
+
+        .search-wrapper, .filter-wrapper { position: relative; flex: 1; min-width: 250px; }
+
+        .search-wrapper input, .filter-wrapper select {
+            width: 100%; padding: 1rem 1rem 1rem 3rem;
+            border: 1px solid var(--border); border-radius: 12px;
+            font-size: 1rem; background: var(--surface);
+            transition: all 0.2s ease; font-family: var(--font);
+            appearance: none; color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-wrapper input:focus, .filter-wrapper select:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .search-icon, .chevron-icon {
+            position: absolute; left: 1rem; top: 50%;
+            transform: translateY(-50%); width: 20px; height: 20px;
+            color: var(--text-muted); pointer-events: none;
+        }
+
+        .chevron-icon { left: auto; right: 1rem; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem; flex: 1;
+        }
+
+        .card {
+            background: var(--surface); border-radius: var(--radius);
+            padding: 1.5rem; border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            display: flex; flex-direction: column; height: 100%;
+            position: relative; overflow: hidden;
+            animation: fadeIn 0.5s ease-out backwards;
+        }
+
+        .card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); border-color: transparent; }
+
+        .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+
+        .card-icon {
+            width: 48px; height: 48px; background: var(--primary-light);
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; color: var(--primary); font-size: 1.5rem;
+        }
+
+        .card-category {
+            position: absolute; top: 1.5rem; right: 1.5rem;
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            color: var(--text-muted); background: #f1f5f9;
+            padding: 4px 8px; border-radius: 6px;
+        }
+
+        .card-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); }
+
+        .card-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
+
+        .card-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 0.5rem; width: 100%; padding: 0.875rem;
+            background: var(--text-main); color: white;
+            text-decoration: none; border-radius: 10px; font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .card-btn:hover { background: var(--primary); }
+
+        .footer { text-align: center; padding-top: 3rem; color: var(--text-muted); font-size: 0.9rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2rem; }
+            .controls { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="header">
+            <div class="brand">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h1>DzGuide<span class="dot">.</span></h1>
+            </div>
+            <p class="subtitle">The comprehensive directory for Algerian digital services.</p>
+            
+            <div class="controls">
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="searchInput" placeholder="Search services (e.g., OuedKniss, CNAS)..." autocomplete="off">
+                </div>
+                
+                <div class="filter-wrapper">
+                    <select id="categoryFilter">
+                        <option value="All">All Categories</option>
+                        <option value="Government">Government</option>
+                        <option value="Services">Services & Startups</option>
+                        <option value="Education">Education</option>
+                        <option value="Utilities">Utilities & Payment</option>
+                    </select>
+                    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+        </header>
+
+        <main class="grid-container" id="servicesGrid"></main>
+
+        <footer class="footer">
+            <p>&copy; 2026 DzGuide. Built for the community. (BY NOVI MOON)</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const servicesData = [
+                { id: 1, name: "OuedKniss", description: "The leading marketplace for buying and selling cars, real estate, and more.", category: "Services", link: "https://www.ouedkniss.com", icon: "🛒" },
+                { id: 2, name: "BaridiMob", description: "Algérie Poste mobile banking. Manage your CCP account and transfers.", category: "Utilities", link: "https://edcarte.poste.dz/", icon: "💳" },
+                { id: 3, name: "Minister of Interior", description: "Official portal for biometric documents (Passport, ID) and administrative paperwork.", category: "Government", link: "https://interieur.gov.dz", icon: "🏛️" },
+                { id: 4, name: "Yassir", description: "Ride-hailing and delivery super-app improving daily transport in Algeria.", category: "Services", link: "https://yassir.com", icon: " taxi " },
+                { id: 5, name: "CNAS El-Hana", description: "Social security space for workers to check status and reimbursements.", category: "Government", link: "https://elhana.cnas.dz", icon: "🏥" },
+                { id: 6, name: "Sonelgaz Payment", description: "Pay your electricity and gas bills online securely.", category: "Utilities", link: "https://paiement.sonelgaz.dz", icon: "⚡" },
+                { id: 7, name: "Univ. Algiers 1", description: "Benyoucef Benkhedda University portal for student resources and news.", category: "Education", link: "https://www.univ-alger.dz", icon: "🎓" },
+                { id: 8, name: "Emploitic", description: "The number one recruitment and job search site in Algeria.", category: "Services", link: "https://www.emploitic.com", icon: "💼" },
+                { id: 9, name: "Algerie Ferries", description: "Book tickets for maritime travel to and from Algeria.", category: "Utilities", link: "https://algerieferries.dz", icon: "⛴️" }
+            ];
+
+            const grid = document.getElementById('servicesGrid');
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+
+            function renderServices(data) {
+                grid.innerHTML = '';
+                if (data.length === 0) {
+                    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 2rem;"><p>No services found.</p></div>`;
+                    return;
+                }
+                data.forEach((service, index) => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    card.style.animationDelay = `${index * 50}ms`;
+                    card.innerHTML = `
+                        <span class="card-category">${service.category}</span>
+                        <div class="card-header">
+                            <div class="card-icon">${service.icon}</div>
+                            <h3 class="card-title">${service.name}</h3>
+                        </div>
+                        <p class="card-desc">${service.description}</p>
+                        <a href="${service.link}" target="_blank" rel="noopener noreferrer" class="card-btn">Visit Website</a>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            function filterData() {
+                const query = searchInput.value.toLowerCase().trim();
+                const category = categoryFilter.value;
+                const filtered = servicesData.filter(item => {
+                    const matchesSearch = item.name.toLowerCase().includes(query) || item.description.toLowerCase().includes(query);
+                    const matchesCategory = category === 'All' || item.category === category;
+                    return matchesSearch && matchesCategory;
+                });
+                renderServices(filtered);
+            }
+
+            searchInput.addEventListener('input', filterData);
+            categoryFilter.addEventListener('change', filterData);
+            renderServices(servicesData);
+        });
+    </script>
+</body>
+</html>
